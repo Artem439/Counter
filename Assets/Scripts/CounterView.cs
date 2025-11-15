@@ -3,32 +3,30 @@ using UnityEngine;
 
 public class CounterView : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _textMeshPro;
-    [SerializeField] private Counter _counter;
+    [SerializeField] private TextMeshProUGUI textMeshPro;
+    [SerializeField] private Counter counter;
 
     private void OnEnable()
     {
-        if (_counter != null)
+        if (counter != null)
         {
-            _counter.OnNumberChanged += UpdateDisplay;
-            Debug.Log("CounterView подписан на изменение числа!");
+            counter.OnNumberChanged += UpdateDisplay;
         }
     }
 
     private void OnDisable()
     {
-        if (_counter != null)
+        if (counter != null)
         {
-            _counter.OnNumberChanged -= UpdateDisplay;
+            counter.OnNumberChanged -= UpdateDisplay;
         }
     }
 
     private void UpdateDisplay(int number)
     {
-        if (_textMeshPro != null)
+        if (textMeshPro != null)
         {
-            _textMeshPro.text = number.ToString();
-            Debug.Log("Обновили текст: " + number);
+            textMeshPro.text = number.ToString();
         }
     }
 }
