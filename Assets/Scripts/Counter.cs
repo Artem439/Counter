@@ -64,7 +64,7 @@ public class Counter : MonoBehaviour
             StopCoroutine(_countRoutine);
         
         _isCounting = true;
-        _startNumber = _currentNumber;
+        //_startNumber = _currentNumber;
         _countRoutine = StartCoroutine(CountRoutine());
     }
 
@@ -73,7 +73,7 @@ public class Counter : MonoBehaviour
         if (_countRoutine == null)
             return;
         
-        StopCoroutine(CountRoutine());
+        StopCoroutine(_countRoutine);
         _countRoutine = null;
         _isCounting = false;
     }
@@ -84,6 +84,7 @@ public class Counter : MonoBehaviour
         {
             _currentNumber++;
             NumberChanged?.Invoke(_currentNumber);
+            
             yield return _wait;
         }
     }

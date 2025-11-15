@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Counter))]
-
 public class CounterView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textMeshPro;

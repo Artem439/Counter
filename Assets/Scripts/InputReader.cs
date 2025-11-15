@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class InputReader : MonoBehaviour
 {
-    public event Action MouseButtonClicked;
-
     private const int NumberButton = 0;
+    
+    public event Action MouseButtonClicked;
     
     void Update()
     {
