@@ -7,7 +7,7 @@ using UnityEngine;
 public class Counter : MonoBehaviour
 {
     [SerializeField] private int _startNumber;
-    [SerializeField] private float delay = 0.5f;
+    [SerializeField] private float _delay = 0.5f;
 
     private WaitForSeconds _wait;
     private InputReader _inputReader;
@@ -16,7 +16,7 @@ public class Counter : MonoBehaviour
     
     private bool _isCounting = false;
     
-    public Action<int> OnNumberChanged;
+    public Action<int> NumberChanged;
     
     private void OnValidate()
     {
@@ -26,15 +26,15 @@ public class Counter : MonoBehaviour
         if (_startNumber < 0)
             _startNumber = 0;
         
-        if (delay < 0)
-            delay = 0;
+        if (_delay < 0)
+            _delay = 0;
     }
 
     private void Awake()
     {
         _inputReader = GetComponent<InputReader>();
         _currentNumber = _startNumber;
-        _wait = new WaitForSeconds(delay);
+        _wait = new WaitForSeconds(_delay);
     }
 
     private void OnEnable()
@@ -69,7 +69,7 @@ public class Counter : MonoBehaviour
         while (_isCounting)
         {
             _currentNumber++;
-            OnNumberChanged?.Invoke(_currentNumber);
+            NumberChanged?.Invoke(_currentNumber);
             yield return _wait;
         }
     }

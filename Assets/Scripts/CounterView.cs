@@ -10,13 +10,13 @@ public class CounterView : MonoBehaviour
     private void OnEnable()
     {
         if (_counter != null)
-            _counter.OnNumberChanged += UpdateDisplay;
+            _counter.NumberChanged += UpdateDisplay;
     }
 
     private void OnDisable()
     {
         if (_counter != null)
-            _counter.OnNumberChanged -= UpdateDisplay;
+            _counter.NumberChanged -= UpdateDisplay;
     }
 
     private void UpdateDisplay(int number)
