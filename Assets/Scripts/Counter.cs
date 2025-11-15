@@ -11,12 +11,13 @@ public class Counter : MonoBehaviour
 
     private WaitForSeconds _wait;
     private InputReader _inputReader;
+    private Coroutine _countRoutine;
     
     private int _currentNumber;
     
     private bool _isCounting = false;
     
-    public Action<int> NumberChanged;
+    public Action<int> NumberChanged; 
     
     private void OnValidate()
     {
@@ -40,28 +41,41 @@ public class Counter : MonoBehaviour
     private void OnEnable()
     {
         if (_inputReader != null)
-            _inputReader.MouseButtonClick += OnStartCounting;
+            _inputReader.MouseButtonClicked += OnStartCounting;
     }
 
     private void OnDisable()
     {
         if (_inputReader != null)
-            _inputReader.MouseButtonClick -= OnStartCounting;
+            _inputReader.MouseButtonClicked -= OnStartCounting;
     }
 
     private void OnStartCounting()
     {
-        if (_isCounting == false)
-        {
-            _isCounting = true;
-            _currentNumber = _startNumber;
-            StartCoroutine(CountRoutine());
-        }
+        if (_isCounting)
+            StopCounter();
         else
-        {
-            StopCoroutine(CountRoutine());
-            _isCounting = false;
-        }
+            StartCounter();
+    }
+
+    private void StartCounter()
+    {
+        if (_countRoutine != null)
+            StopCoroutine(_countRoutine);
+        
+        _isCounting = true;
+        _startNumber = _currentNumber;
+        _countRoutine = StartCoroutine(CountRoutine());
+    }
+
+    private void StopCounter()
+    {
+        if (_countRoutine == null)
+            return;
+        
+        StopCoroutine(CountRoutine());
+        _countRoutine = null;
+        _isCounting = false;
     }
 
     private IEnumerator CountRoutine()

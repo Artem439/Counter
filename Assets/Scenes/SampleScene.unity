@@ -448,7 +448,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textMeshPro: {fileID: 228753791}
-  _counter: {fileID: 1743934023}
 --- !u!114 &1743934023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,7 +460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0395e3adc99b3ea41affdbcf4487150c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startNumber: 0
+  _startNumber: 5
   _delay: 0.5
 --- !u!114 &1743934024
 MonoBehaviour:
@@ -475,9 +474,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcce1b5445d213a488d7290911536fb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnMouseButtonClick:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &1743934025
 Transform:
   m_ObjectHideFlags: 0
