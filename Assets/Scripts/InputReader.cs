@@ -7,7 +7,7 @@ public class InputReader : MonoBehaviour
     
     public event Action MouseButtonClicked;
     
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(NumberButton))
             MouseButtonClicked?.Invoke();

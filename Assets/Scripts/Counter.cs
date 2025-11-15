@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(InputReader))]
-
 public class Counter : MonoBehaviour
 {
     [SerializeField] private int _startNumber;
@@ -40,14 +39,12 @@ public class Counter : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_inputReader != null)
-            _inputReader.MouseButtonClicked += OnStartCounting;
+        _inputReader.MouseButtonClicked += OnStartCounting;
     }
 
     private void OnDisable()
     {
-        if (_inputReader != null)
-            _inputReader.MouseButtonClicked -= OnStartCounting;
+        _inputReader.MouseButtonClicked -= OnStartCounting;
     }
 
     private void OnStartCounting()
@@ -64,7 +61,6 @@ public class Counter : MonoBehaviour
             StopCoroutine(_countRoutine);
         
         _isCounting = true;
-        //_startNumber = _currentNumber;
         _countRoutine = StartCoroutine(CountRoutine());
     }
 
