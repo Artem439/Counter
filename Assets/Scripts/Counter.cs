@@ -1,96 +1,88 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(InputReader))]
+
 public class Counter : MonoBehaviour
 {
-    /*
-    [SerializeField] private Button _button;
-    [SerializeField] private CountView _count;
-    [SerializeField] private int _addValue;
-	
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(OnButtonClicked);
-    }
+    [SerializeField] private int _startNumber;
+    [SerializeField] private float _delay = 0.5f;
 
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnButtonClicked);
-    }
-
-    private void OnButtonClicked()
-    {
-        _count.DisplayCountUp(_addValue);
-    }
-    */
-    
-    [SerializeField] private Button _button;
-    [SerializeField] private CountView _countView;
-    
-    private int _currentCount = 0;
+    private WaitForSeconds _wait;
+    private int _currentNumber;
     private bool _isCounting = false;
-    private Coroutine _countingCoroutine;
+    private InputReader _inputReader;
+    
+    public Action<int> OnNumberChanged;
+    
+    private void OnValidate()
+    {
+        if (_currentNumber < 0)
+            _currentNumber = 0;
+        
+        if (_startNumber < 0)
+            _startNumber = 0;
+        
+        if (_delay < 0)
+            _delay = 0;
+    }
+
+    private void Awake()
+    {
+        _inputReader = GetComponent<InputReader>();
+        _currentNumber = _startNumber;
+        _wait = new WaitForSeconds(_delay);
+        
+        Debug.Log($"Стартовое значение _isCounting: {_isCounting}");
+    }
 
     private void OnEnable()
     {
-        _button.onClick.AddListener(OnButtonClicked);
-    }
-
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnButtonClicked);
-        
-        // Останавливаем корутину при отключении
-        if (_countingCoroutine != null)
+        if (_inputReader != null)
         {
-            StopCoroutine(_countingCoroutine);
+            _inputReader.OnMouseButtonClick.AddListener(OnStartCounting);
+            Debug.Log("Подписались на клик!");
         }
     }
 
-    private void OnButtonClicked()
+    private void OnDisable()
     {
-        ToggleCounting();
+        if (_inputReader != null)
+        {
+            _inputReader.OnMouseButtonClick.RemoveListener(OnStartCounting);
+            Debug.Log("Отписались от клика!");
+        }
     }
 
-    private void ToggleCounting()
+    private void OnStartCounting()
     {
-        if (_isCounting)
+        if (_isCounting == false)
         {
-            StopCounting();
+            _isCounting = true;
+            _currentNumber = _startNumber;
+            StartCoroutine(CountRoutine());
+            Debug.Log("Счётчик запущен!");
         }
         else
         {
-            StartCounting();
-        }
-    }
-
-    private void StartCounting()
-    {
-        _isCounting = true;
-        _countingCoroutine = StartCoroutine(CountRoutine());
-    }
-
-    private void StopCounting()
-    {
-        _isCounting = false;
-        
-        if (_countingCoroutine != null)
-        {
-            StopCoroutine(_countingCoroutine);
-            _countingCoroutine = null;
+            StopCoroutine(CountRoutine());
+            _isCounting = false;
+            Debug.Log("Счётчик остановлен!");
         }
     }
 
     private IEnumerator CountRoutine()
     {
-        var wait = new WaitForSeconds(0.5f);
-        
         while (_isCounting)
         {
-            _currentCount++;
-            _countView.DisplayCount(_currentCount);
-            yield return wait;
+            _currentNumber++;
+            Debug.Log("Текущее число: " + _currentNumber);
+            OnNumberChanged?.Invoke(_currentNumber);
+            yield return _wait;
         }
     }
 }
