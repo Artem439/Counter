@@ -6,13 +6,15 @@ using UnityEngine;
 
 public class Counter : MonoBehaviour
 {
-    [SerializeField] private int startNumber;
+    [SerializeField] private int _startNumber;
     [SerializeField] private float delay = 0.5f;
 
     private WaitForSeconds _wait;
-    private int _currentNumber;
-    private bool _isCounting = false;
     private InputReader _inputReader;
+    
+    private int _currentNumber;
+    
+    private bool _isCounting = false;
     
     public Action<int> OnNumberChanged;
     
@@ -21,8 +23,8 @@ public class Counter : MonoBehaviour
         if (_currentNumber < 0)
             _currentNumber = 0;
         
-        if (startNumber < 0)
-            startNumber = 0;
+        if (_startNumber < 0)
+            _startNumber = 0;
         
         if (delay < 0)
             delay = 0;
@@ -31,24 +33,20 @@ public class Counter : MonoBehaviour
     private void Awake()
     {
         _inputReader = GetComponent<InputReader>();
-        _currentNumber = startNumber;
+        _currentNumber = _startNumber;
         _wait = new WaitForSeconds(delay);
     }
 
     private void OnEnable()
     {
         if (_inputReader != null)
-        {
-            _inputReader.onMouseButtonClick.AddListener(OnStartCounting);
-        }
+            _inputReader.MouseButtonClick += OnStartCounting;
     }
 
     private void OnDisable()
     {
         if (_inputReader != null)
-        {
-            _inputReader.onMouseButtonClick.RemoveListener(OnStartCounting);
-        }
+            _inputReader.MouseButtonClick -= OnStartCounting;
     }
 
     private void OnStartCounting()
@@ -56,7 +54,7 @@ public class Counter : MonoBehaviour
         if (_isCounting == false)
         {
             _isCounting = true;
-            _currentNumber = startNumber;
+            _currentNumber = _startNumber;
             StartCoroutine(CountRoutine());
         }
         else
